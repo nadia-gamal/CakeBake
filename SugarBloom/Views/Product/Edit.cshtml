@@ -1,0 +1,164 @@
+﻿@model CakeBake.ViewModels.Products.EditProductViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container-fluid">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h3>Edit Product</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Edit"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Name" class="form-label"></label>
+
+                    <input asp-for="Name"
+                           class="form-control" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Description"
+                           class="form-label"></label>
+
+                    <textarea asp-for="Description"
+                              rows="5"
+                              class="form-control"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+
+                            <label asp-for="Price"
+                                   class="form-label"></label>
+
+                            <input asp-for="Price"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Price"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="mb-3">
+
+                            <label asp-for="StockQuantity"
+                                   class="form-label"></label>
+
+                            <input asp-for="StockQuantity"
+                                   class="form-control" />
+
+                            <span asp-validation-for="StockQuantity"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="CategoryId"
+                           class="form-label"></label>
+
+                    <select asp-for="CategoryId"
+                            asp-items="Model.Categories"
+                            class="form-select">
+                    </select>
+
+                    <span asp-validation-for="CategoryId"
+                          class="text-danger"></span>
+
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.CurrentImage))
+                {
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Current Image
+                        </label>
+
+                        <br />
+
+                        <img src="@Model.CurrentImage"
+                             width="120"
+                             class="rounded border" />
+
+                    </div>
+                }
+
+                <div class="mb-3">
+
+                    <label asp-for="Image"
+                           class="form-label"></label>
+
+                    <input asp-for="Image"
+                           class="form-control" />
+
+                    <span asp-validation-for="Image"
+                          class="text-danger"></span>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Update Product
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

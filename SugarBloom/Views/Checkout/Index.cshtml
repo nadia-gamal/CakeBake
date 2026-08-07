@@ -1,0 +1,141 @@
+﻿@model CakeBake.ViewModels.Checkout.CheckoutViewModel
+
+@{
+	ViewData["Title"] = "Checkout";
+}
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+					  <p>Delicious Treats Await</p>
+						<h1>Check Out Product</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+@if (TempData["Error"] != null)
+{
+	<div class="container mt-4">
+		<div class="alert alert-warning">
+			@TempData["Error"]
+		</div>
+	</div>
+}
+
+	<!-- check out section -->
+	<div class="checkout-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="checkout-accordion-wrap">
+						<div class="accordion" id="accordionExample">
+							<div class="card single-accordion">
+								<div class="card-header" id="headingOne">
+									<h5 class="mb-0">
+										<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+											Billing Address
+										</button>
+									</h5>
+								</div>
+
+								<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+									<div class="card-body">
+										<div class="billing-address-form">
+											<form asp-action="PlaceOrder"
+												  asp-controller="Checkout"
+												  method="post">
+
+												@Html.AntiForgeryToken()
+												<p>
+												<label>
+													Delivery Address <span class="text-danger">*</span>
+												</label>
+
+													<input asp-for="DeliveryAddress"
+														   class="form-control" />
+
+													<span asp-validation-for="DeliveryAddress"
+														  class="text-danger"></span>
+												</p>
+
+												<p>
+													<label>Notes</label>
+
+													<textarea asp-for="Notes"
+															  class="form-control"
+															  rows="4"></textarea>
+												</p>
+
+											<button type="submit"
+													class="boxed-btn border-0 w-100">
+												Place Order
+											</button>
+
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="order-details-wrap">
+						<table class="order-details">
+							<thead>
+								<tr>
+									<th>Your order Details</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody class="order-details-body">
+								<tr>
+									<td>Product</td>
+									<td>Total</td>
+								</tr>
+								@foreach (var item in Model.Items)
+								{
+									<tr>
+
+										<td>
+											@item.ProductName × @item.Quantity
+										</td>
+
+										<td>
+											@item.TotalPrice.ToString("0.00") EGP
+										</td>
+
+									</tr>
+								}
+
+							</tbody>
+							<tbody class="checkout-details">
+								<tr>
+									<td>Subtotal</td>
+									<td>@Model.GrandTotal.ToString("0.00") EGP</td>
+								</tr>
+								<tr>
+									<td>Shipping</td>
+									<td>Free</td>
+								</tr>
+								<tr>
+									<td>Total</td>
+									<td>@Model.GrandTotal.ToString("0.00") EGP</td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end check out section -->

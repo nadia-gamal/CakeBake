@@ -1,0 +1,71 @@
+﻿@model CakeBake.ViewModels.Admin.DashboardViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+}
+<div class="dashboard-overview">
+
+    <h3 class="section-title">Overview</h3>
+
+    <div class="overview-grid">
+
+        <div class="overview-card success">
+
+            <div class="card-icon">
+                <i class="fas fa-box"></i>
+            </div>
+
+            <div class="card-content">
+                <h2>@Model.ProductsCount</h2>
+                <p>Total Products</p>
+            </div>
+
+        </div>
+
+        <div class="overview-card success">
+
+            <div class="card-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+
+            <div class="card-content">
+                <h2>@Model.OrdersCount</h2>
+                <p>Orders</p>
+            </div>
+
+        </div>
+
+        <div class="overview-card success">
+
+            
+
+                <div class="card-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+
+                <div class="card-content">
+                    <h2>@Model.CategoriesCount</h2>
+                    <p>Categories</p>
+                </div>
+
+            
+
+        </div>
+
+        <div class="overview-card danger">
+
+            <div class="card-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+
+            <div class="card-content">
+                <h2>@Model.OutOfStockCount</h2>
+                <p>Out Of Stock</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

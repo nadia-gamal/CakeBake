@@ -1,0 +1,192 @@
+﻿@model CakeBake.ViewModels.Settings.ProfileViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "My Profile";
+}
+
+<h2 class="mb-4">My Profile</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+
+        @TempData["Success"]
+
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+
+        @TempData["Error"]
+
+    </div>
+}
+
+<form asp-action="Profile" method="post" enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+   
+            <div class="card shadow-sm">
+
+                 <div class="card-body">
+
+                    <h5 class="mb-4">
+                        <i class="fas fa-user me-2"></i>
+                        Personal Information
+                    </h5>
+
+                    <div class="card-header bg-white border-0 text-center py-4">
+
+                        <div id="changeImage"
+                             style="cursor:pointer;display:inline-block;position:relative;">
+
+                            <img src="@(string.IsNullOrEmpty(Model.CurrentImage)
+                                                   ? Url.Content("~/images/admin.png")
+                                                   : Model.CurrentImage)"
+                                 id="previewImage"
+                                 class="rounded-circle border"
+                                 width="140"
+                                 height="140"
+                                 style="object-fit:cover;" />
+
+                            <div style="
+                                 position:absolute;
+                                 bottom:8px;
+                                 right:8px;
+                                 width:40px;
+                                  height:40px;
+                                  border-radius:50%;
+                                background:#2a2e33;
+                                 color:white;
+                                   display:flex;
+                                justify-content:center;
+                                 align-items:center;">
+
+                                <i class="fas fa-camera"></i>
+
+                            </div>
+
+                        </div>
+
+                        <input asp-for="Image"
+                               id="Image"
+                               type="file"
+                               hidden
+                               accept="image/*" />
+
+                        <h4 class="mt-3 mb-1">@Model.FullName</h4>
+
+                        <p class="text-muted mb-0">@Model.Email</p>
+
+                    </div>
+
+                              <div class="mb-3">
+
+                                 <label class="form-label">Full Name</label>
+
+                                  <input asp-for="FullName"
+                                  class="form-control" />
+
+                              </div>
+
+                             <div class="mb-3">
+
+                                 <label class="form-label">Email</label>
+
+                                  <input asp-for="Email"
+                                 class="form-control"
+                                   readonly />
+
+                             </div>
+
+                 </div>
+            </div>
+        </div>
+
+
+        <hr class="my-4" />
+
+        <h5 class="mb-4">
+            <i class="fas fa-lock me-2"></i>
+            Change Password
+        </h5>
+
+        <div class="mb-3">
+
+            <label>Current Password</label>
+
+            <input asp-for="CurrentPassword"
+                   class="form-control"
+                   type="password"
+                   autocomplete="new-password" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>New Password</label>
+
+            <input asp-for="NewPassword"
+                   class="form-control"
+                   type="password"
+                   autocomplete="new-password" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Confirm Password</label>
+
+            <input asp-for="ConfirmPassword"
+                   class="form-control"
+                   type="password"
+                   autocomplete="new-password" />
+
+        </div>
+
+        <div class="text-end mt-4">
+
+            <button type="submit"
+                    class="btn btn-primary px-5">
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+</div>
+
+    @section Scripts{
+
+        <script>
+
+            const image=document.getElementById("Image");
+            const preview=document.getElementById("previewImage");
+
+            document.getElementById("changeImage").onclick=function(){
+
+                image.click();
+
+            };
+
+            image.onchange=function(){
+
+                if(image.files.length>0){
+
+                    preview.src=URL.createObjectURL(image.files[0]);
+
+                }
+
+            };
+
+        </script>
+
+    }
+</form>

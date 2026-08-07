@@ -1,0 +1,50 @@
+﻿@model CakeBake.ViewModels.Categories.EditCategoryViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Category";
+}
+
+<div class="container mt-5">
+
+    <h2>Edit Category</h2>
+
+    <form asp-action="Edit"
+          method="post">
+
+        <input asp-for="Id" type="hidden" />
+
+        <div class="mb-3">
+
+            <label asp-for="Name"
+                   class="form-label"></label>
+
+            <input asp-for="Name"
+                   class="form-control" />
+
+            <span asp-validation-for="Name"
+                  class="text-danger"></span>
+
+        </div>
+
+        <button class="btn btn-primary">
+
+            Update
+
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+
+            Back
+
+        </a>
+
+    </form>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

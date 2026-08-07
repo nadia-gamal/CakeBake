@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CakeBake.ViewModels.Admin.NotificationViewModel>
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Orders";
+}
+
+<div class="notifications-page">
+
+    <div class="page-header mb-4">
+
+        <h2>Orders</h2>
+
+        <p class="text-muted">
+            Manage customer orders
+        </p>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+
+            No orders found.
+
+        </div>
+    }
+    else
+    {
+        @foreach (var item in Model)
+        {
+            <div class="notification-card">
+
+                <div class="notification-icon">
+
+                    <i class="fas fa-shopping-bag"></i>
+
+                </div>
+
+                <div class="notification-content">
+
+                    <h5>
+
+                        Order #@item.OrderId
+
+                    </h5>
+
+                    <p>
+
+                        <strong>@item.CustomerName</strong>
+                        placed a new order.
+
+                    </p>
+
+                    <small>
+
+                        Status :
+                        <span class="badge bg-warning text-dark">
+
+                            @item.Status
+
+                        </span>
+
+                    </small>
+
+                    <br />
+
+                    <small class="text-muted">
+
+                        @item.OrderDate.ToString("dd MMM yyyy - hh:mm tt")
+
+                    </small>
+
+                </div>
+
+                <div class="notification-action">
+
+                    <a asp-controller="Order"
+                       asp-action="Details"
+                       asp-route-id="@item.OrderId"
+                       class="btn btn-primary">
+
+                        View
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

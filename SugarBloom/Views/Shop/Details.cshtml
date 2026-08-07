@@ -1,0 +1,499 @@
+﻿@model CakeBake.ViewModels.Shop.ProductDetailsViewModel
+
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+					<div class="breadcrumb-text">
+
+						<p>
+							<a asp-controller="Home"
+							   asp-action="Index">
+								Home
+							</a>
+
+							<span>/</span>
+
+							<a asp-controller="Shop"
+							   asp-action="Index">
+								Shop
+							</a>
+
+							<span>/</span>
+
+							@Model.Product.Name
+						</p>
+
+						<h1>@Model.Product.Name</h1>
+
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- single product -->
+	<div class="single-product mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="single-product-img">
+					<img src="@(string.IsNullOrEmpty(Model.Product.ImageUrl)
+					   ? Url.Content("~/assets/img/products/product-img-1.jpg")
+					   		  : Model.Product.ImageUrl)"
+						 alt="@Model.Product.Name">
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="single-product-content">
+					<h3>@Model.Product.Name</h3>
+						<p class="single-product-pricing">
+
+						@Model.Product.Price.ToString("0.00") EGP
+
+						</p>
+
+					@if (Model.Product.IsAvailable)
+					{
+						<p class="stock-status in-stock">
+							<i class="fas fa-check-circle"></i>
+							In Stock
+						</p>
+					}
+					else
+					{
+						<p class="stock-status out-stock">
+							<i class="fas fa-times-circle"></i>
+							Out of Stock
+						</p>
+					}
+
+					<h5 class="mt-4 mb-2">
+						Description
+					</h5>
+
+					<p class="product-description">
+						@Model.Product.Description
+					</p>
+
+
+						<div class="single-product-form">
+
+						@if (Model.Product.IsAvailable)
+							{
+								<form id="add-to-cart-form">
+
+									@Html.AntiForgeryToken()
+
+									<input type="hidden"
+										   id="productId"
+									   value="@Model.Product.Id" />
+
+									<div class="cart-quantity mb-3">
+
+										<button type="button"
+												class="qty-btn minus">
+
+											<i class="fas fa-minus"></i>
+
+										</button>
+
+									<span id="quantityValue">
+										@(Model.CartQuantity == 0 ? 1 : Model.CartQuantity)
+									</span>
+
+										<button type="button"
+												class="qty-btn plus">
+
+											<i class="fas fa-plus"></i>
+
+										</button>
+
+									</div>
+
+								<button type="submit"
+										class="cart-btn border-0">
+
+									<i class="fas fa-shopping-cart"></i>
+
+									@(Model.CartQuantity > 0 ? "Update Cart" : "Add To Cart")
+
+								</button>
+
+								<div id="cart-message" class="alert alert-success mt-3 d-none">
+									<i class="fas fa-check-circle"></i>
+									Cart updated successfully.
+								</div>
+
+								</form>
+							}
+							else
+							{
+								<button class="cart-btn"
+										disabled
+										style="opacity:.6;cursor:not-allowed;">
+
+									Out Of Stock
+
+								</button>
+							}
+							
+						     <p class="mt-4">
+							 <strong>Category:</strong>
+
+							  <span class="badge badge-light px-3 py-2">
+
+								@Model.Product.Category?.Name
+
+							 </span>
+						    </p>
+
+						  @if (Model.Product.IsAvailable)
+						  {
+							<p class="text-muted">
+
+								Only <strong>@Model.Product.StockQuantity</strong> item(s) left
+							</p>
+						  }
+
+						</div>
+
+					@{
+						var productUrl = Url.Action(
+						"Details",
+						"Shop",
+						new { id = Model.Product.Id },
+						Context.Request.Scheme
+						);
+
+						var shareText = Uri.EscapeDataString($"Check out this delicious {Model.Product.Name} on CakeBake!");
+					}
+
+					<h4>Share with your friends</h4>
+
+					<ul class="product-share">
+
+						<li>
+							<a href="https://www.facebook.com/sharer/sharer.php?u=@productUrl"
+							   target="_blank"
+							   title="Facebook">
+
+								<i class="fab fa-facebook-f"></i>
+
+							</a>
+						</li>
+
+						<li>
+							<a href="https://twitter.com/intent/tweet?text=@shareText&url=@productUrl"
+							   target="_blank"
+							   title="X">
+
+								<i class="fab fa-twitter"></i>
+
+							</a>
+						</li>
+
+						<li>
+							<a href="https://wa.me/?text=@shareText%20@productUrl"
+							   target="_blank"
+							   title="WhatsApp">
+
+								<i class="fab fa-whatsapp"></i>
+
+							</a>
+						</li>
+
+						<li>
+							<a href="#"
+							   id="copy-link"
+							   title="Copy Link">
+
+								<i class="fas fa-link"></i>
+
+							</a>
+						</li>
+
+					</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end single product -->
+	<!-- more products -->
+	<div class="more-products mb-150">
+		<div class="container">
+
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="section-title">
+					<h3><span class="orange-text">You May</span> Also Like</h3>
+					<p>Explore more handcrafted desserts made with premium ingredients and lots of love.</p>
+				</div>
+			</div>
+		</div>
+		 <div class="row">
+
+			@foreach (var item in Model.RelatedProducts)
+			{
+				<div class="col-lg-4 col-md-6 text-center">
+
+					<div class="single-product-item">
+
+						<div class="product-image">
+
+							<a asp-controller="Shop"
+							   asp-action="Details"
+							   asp-route-id="@item.Id">
+
+								<img src="@item.ImageUrl"
+									 alt="@item.Name">
+
+							</a>
+
+						</div>
+
+						<h3>@item.Name</h3>
+
+						<p class="product-price">
+
+							@item.Price.ToString("0.00") EGP
+
+						</p>
+
+						@if (item.IsAvailable)
+						{
+							<p class="text-success mb-2">
+								<strong>Available</strong>
+							</p>
+
+							<a asp-controller="Shop"
+							   asp-action="Details"
+							   asp-route-id="@item.Id"
+							   class="cart-btn">
+
+								View Details
+
+							</a>
+						}
+						else
+						{
+							<p class="text-danger mb-2">
+								<strong>Out Of Stock</strong>
+							</p>
+
+							<a asp-controller="Shop"
+							   asp-action="Details"
+							   asp-route-id="@item.Id"
+							   class="cart-btn">
+
+								View Details
+
+							</a>
+						}
+
+					</div>
+
+				</div>
+			}
+
+		 </div>
+		</div>
+	</div>
+	<!-- end more products -->
+
+<div id="cart-toast" class="cart-toast">
+	<i class="fas fa-check-circle"></i>
+	<span id="cart-toast-text"> </span>
+</div>
+
+@section Scripts {
+
+	<script>
+
+		const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+		let cartQuantity = @Model.CartQuantity;
+
+		let quantity = parseInt(document.getElementById("quantityValue").innerText);
+
+		const maxStock = @Model.Product.StockQuantity;
+
+		const quantityValue = document.getElementById("quantityValue");
+
+		function showToast(message) {
+
+			const toast = document.getElementById("cart-toast");
+			const text = document.getElementById("cart-toast-text");
+
+			text.innerText = message;
+
+			toast.classList.add("show");
+
+			setTimeout(() => {
+				toast.classList.remove("show");
+			}, 2000);
+		}
+
+		document.querySelector(".plus")?.addEventListener("click", () => {
+
+			if (quantity >= maxStock) {
+				showToast("Maximum available quantity reached.");
+				return;
+			}
+
+			quantity++;
+			quantityValue.innerText = quantity;
+
+		});
+
+		document.querySelector(".minus")?.addEventListener("click", () => {
+
+			if (quantity <= 0)
+				return;
+
+			quantity--;
+			quantityValue.innerText = quantity;
+
+		});
+
+		document.getElementById("add-to-cart-form")?.addEventListener("submit", async function (e) {
+
+			e.preventDefault();
+
+			const wasInCart = cartQuantity > 0;
+
+			if (wasInCart && quantity === cartQuantity) {
+				showToast("Quantity is already up to date.");
+				return;
+			}
+
+			const productId = document.getElementById("productId").value;
+
+			let url = "";
+			let body = "";
+
+			if (quantity === 0) {
+
+				if (!wasInCart)
+					return;
+
+				url = "/Cart/RemoveAjax";
+				body = `productId=${productId}`;
+			}
+			else {
+
+				url = wasInCart
+					? "/Cart/UpdateAjax"
+					: "/Cart/AddAjax";
+
+				body = `productId=${productId}&quantity=${quantity}`;
+			}
+
+			const response = await fetch(url, {
+
+				method: "POST",
+
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded",
+					"RequestVerificationToken": token
+				},
+
+				body: body
+
+			});
+
+			const result = await response.json();
+
+			if (!result.success)
+				return;
+
+			let badge = document.getElementById("cart-count");
+
+			if (result.cartCount > 0) {
+
+				if (!badge) {
+
+					const cartIcon = document.querySelector(".shopping-cart");
+
+					cartIcon.insertAdjacentHTML("beforeend", `
+						<span id="cart-count"
+							  style="
+								position:absolute;
+								top:-8px;
+								right:-10px;
+								background:#499A13;
+								color:white;
+								border-radius:50%;
+								min-width:20px;
+								height:20px;
+								line-height:20px;
+								text-align:center;
+								font-size:12px;
+								font-weight:bold;">
+							${result.cartCount}
+						</span>
+					`);
+
+					badge = document.getElementById("cart-count");
+				}
+				else {
+
+					badge.style.display = "inline-block";
+					badge.innerText = result.cartCount;
+
+				}
+
+			}
+			else {
+
+				badge?.remove();
+
+			}
+
+			if (quantity === 0) {
+
+				cartQuantity = 0;
+
+				document.querySelector(".cart-btn").innerHTML = `
+					<i class="fas fa-shopping-cart"></i>
+					Add To Cart
+				`;
+
+				showToast("Product removed from cart.");
+
+				return;
+			}
+
+			cartQuantity = quantity;
+
+			document.querySelector(".cart-btn").innerHTML = `
+				<i class="fas fa-shopping-cart"></i>
+				Update Cart
+			`;
+
+			showToast(
+				wasInCart
+					? "Cart updated successfully."
+					: "Product added to cart."
+			);
+
+		});
+
+				document.getElementById("copy-link")?.addEventListener("click", async function (e) {
+
+			e.preventDefault();
+
+			await navigator.clipboard.writeText(window.location.href);
+
+			showToast("Product link copied.");
+
+		});
+
+	</script>
+
+}

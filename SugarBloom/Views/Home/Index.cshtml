@@ -1,0 +1,436 @@
+﻿@model CakeBake.ViewModels.Home.HomeViewModel
+
+<!-- hero area -->
+<div class="hero-area hero-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 offset-lg-2 text-center">
+                <div class="hero-text">
+                    <div class="hero-text-tablecell">
+                        <p class="subtitle">Freshly Baked Every Day</p>
+
+                        <h1>Sweet Moments Start Here</h1>
+
+                        <div class="hero-btns">
+                            <a asp-controller="Shop"
+                               asp-action="Index"
+                               class="boxed-btn">
+                                Shop Now
+                            </a>
+
+                            <a asp-controller="Contact"
+                               asp-action="Index"
+                               class="bordered-btn">
+                                Contact Us
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end hero area -->
+<!-- features list section -->
+<div class="list-section pt-80 pb-80">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Freshly Baked</h3>
+                        <p>Made every morning with premium ingredients</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <div class="list-box d-flex align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-cookie-bite"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Custom Orders</h3>
+                        <p>Personalized cakes for every occasion</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="list-box d-flex justify-content-start align-items-center">
+                    <div class="list-icon">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Fast Delivery</h3>
+                        <p>Fresh desserts delivered to your door.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- end features list section -->
+<!-- product section -->
+<div class="product-section mt-150 mb-150">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-8 offset-lg-2 text-center">
+
+                <div class="section-title">
+
+                    <h3>
+                        <span class="orange-text">Our </span> Best Sellers
+                    </h3>
+
+                    <p>
+                        Discover our most loved desserts, freshly baked and crafted with love.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            @if (Model.FeaturedProducts.Any())
+            {
+                @foreach (var product in Model.FeaturedProducts)
+                {
+                    <div class="col-lg-4 col-md-6 text-center">
+
+                        <div class="single-product-item">
+
+                            <div class="product-image">
+
+                                <a asp-controller="Shop"
+                                   asp-action="Details"
+                                   asp-route-id="@product.Id">
+
+                                    <img src="@product.ImageUrl"
+                                         alt="@product.Name" />
+
+                                </a>
+
+                            </div>
+
+                            <h3>@product.Name</h3>
+
+                            @if (product.IsAvailable)
+                            {
+                                <p class="stock-status in-stock">
+                                    <i class="fas fa-check-circle"></i>
+                                    In Stock
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="stock-status out-stock">
+                                    <i class="fas fa-times-circle"></i>
+                                    Out of Stock
+                                </p>
+                            }
+
+                            <p class="product-price">
+                                <span>Per Piece</span>
+                                @product.Price.ToString("0.00") EGP
+                            </p>
+
+                            @if (!product.IsAvailable)
+                            {
+                                <button class="cart-btn disabled-stock" disabled>
+                                    <i class="fas fa-times-circle"></i>
+                                    Out of Stock
+                                </button>
+                            }
+                            else if (product.CartQuantity == 0)
+                            {
+                                <form class="add-to-cart-form"
+                                      data-stock="@product.StockQuantity">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden" class="product-id" value="@product.Id" />
+                                    <input type="hidden" class="quantity" value="1" />
+
+                                    <button type="submit" class="cart-btn border-0 add-cart-btn">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Add To Cart
+                                    </button>
+
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="cart-quantity"
+                                     data-product-id="@product.Id"
+                                     data-stock="@product.StockQuantity">
+
+                                    <button class="qty-btn minus">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+
+                                    <span class="qty-value">
+                                        @product.CartQuantity
+                                    </span>
+
+                                    <button class="qty-btn plus">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+
+                    <h4>Fresh treats are coming soon! 🍰</h4>
+
+                    <p class="text-muted">
+                        We are preparing delicious treats for you.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+<!-- end product section -->
+
+<div id="cart-toast" class="cart-toast">
+    <i class="fas fa-exclamation-circle"></i>
+    <span id="cart-toast-text"></span>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+                function updateCartBadge(change)
+        {
+            const badge = document.getElementById("cart-count");
+
+            if (!badge)
+                return;
+
+            let count = parseInt(badge.textContent.trim()) || 0;
+
+            count += change;
+
+            if (count <= 0)
+            {
+                badge.textContent = "0";
+                badge.style.display = "none";
+                return;
+            }
+
+            badge.textContent = count;
+            badge.style.display = "inline-block";
+        }
+
+        async function addToCart(productId)
+        {
+            const response = await fetch("/Cart/AddAjax",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/x-www-form-urlencoded",
+                    "RequestVerificationToken":token
+                },
+
+                body:`productId=${productId}&quantity=1`
+
+            });
+
+            const result = await response.json();
+
+            return result.success;
+        }
+
+                async function changeQuantity(productId, change) {
+
+            const response = await fetch("/Cart/ChangeQuantity", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "RequestVerificationToken": token
+                },
+
+                body: `productId=${productId}&change=${change}`
+
+            });
+
+            return await response.json();
+        }
+
+        function attachAddEvents()
+        {
+            document.querySelectorAll(".add-to-cart-form").forEach(form=>{
+
+                form.addEventListener("submit",async function(e){
+
+                    e.preventDefault();
+
+                    if(!window.isAuthenticated)
+                    {
+                        window.location="/Account/Login";
+                        return;
+                    }
+
+                    const productId=this.querySelector(".product-id").value;
+
+                    const stock = this.dataset.stock;
+
+                    const success=await addToCart(productId);
+
+                    if(!success)
+                        return;
+
+                    updateCartBadge(1);
+
+                                            this.outerHTML = `
+        <div class="cart-quantity"
+             data-product-id="${productId}"
+             data-stock="${stock}">
+
+            <button type="button" class="qty-btn minus">
+                <i class="fas fa-minus"></i>
+            </button>
+
+            <span class="qty-value">1</span>
+
+            <button type="button" class="qty-btn plus">
+                <i class="fas fa-plus"></i>
+            </button>
+
+        </div>
+        `;
+
+                });
+
+            });
+
+        }
+
+        attachAddEvents();
+
+                document.addEventListener("click", async function (e) {
+
+            if (!e.target.closest(".qty-btn"))
+                return;
+
+            const btn = e.target.closest(".qty-btn");
+
+            const container = btn.closest(".cart-quantity");
+
+            const productId = container.dataset.productId;
+
+
+
+                    const stock = parseInt(container.dataset.stock);
+        const currentQty = parseInt(container.querySelector(".qty-value").innerText);
+
+
+
+                    const change = btn.classList.contains("plus") ? 1 : -1;
+
+        if (change === 1 && currentQty >= stock) {
+
+            showCartToast(`Only ${stock} item(s) available in stock.`);
+
+            return;
+        }
+
+            const result = await changeQuantity(productId, change);
+
+            if (!result.success)
+                return;
+
+                    const badge = document.getElementById("cart-count");
+
+        if (badge) {
+            badge.innerText = result.cartCount;
+
+            if (result.cartCount <= 0)
+                badge.style.display = "none";
+            else
+                badge.style.display = "inline-block";
+        }
+
+            if (result.quantity == 0) {
+
+                container.outerHTML = `
+                    <form class="add-to-cart-form">
+
+                        <input name="__RequestVerificationToken"
+                               type="hidden"
+                               value="${token}" />
+
+                        <input type="hidden"
+                               class="product-id"
+                               value="${productId}" />
+
+                        <input type="hidden"
+                               class="quantity"
+                               value="1" />
+
+                        <button type="submit"
+                                class="cart-btn border-0 add-cart-btn">
+
+                            <i class="fas fa-shopping-cart"></i>
+
+                            Add To Cart
+
+                        </button>
+
+                    </form>
+                `;
+
+                attachAddEvents();
+
+                return;
+            }
+
+            container.querySelector(".qty-value").innerText = result.quantity;
+
+        });
+
+                function showCartToast(message) {
+
+            const toast = document.getElementById("cart-toast");
+            const text = document.getElementById("cart-toast-text");
+
+            text.innerText = message;
+
+            toast.classList.add("show");
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2000);
+        }
+
+    </script>
+}

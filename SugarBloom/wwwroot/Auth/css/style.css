@@ -1,0 +1,139 @@
+.auth-section {
+    padding: 60px 0;
+    background: #fff7fa;
+    min-height: 100vh;
+}
+
+.auth-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #2f2f2f;
+}
+
+.auth-subtitle {
+    color: #777;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.auth-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.08);
+}
+
+    .auth-card h3 {
+        color: #D10056;
+        font-weight: 700;
+        margin-top: 10px;
+        margin-bottom: 25px;
+    }
+
+.login-logo {
+    width: 180px;
+    display: block;
+    margin: 0 auto;
+}
+
+.auth-card h3 {
+    color: #D10056;
+    font-weight: 700;
+}
+
+.form-label {
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    height: 52px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    transition: .3s;
+}
+
+    .form-control:focus {
+        border-color: #D10056;
+        box-shadow: 0 0 0 .2rem rgba(209,0,86,.15);
+    }
+
+.validation-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: block;
+}
+
+.btn-register {
+    width: 100%;
+    height: 52px;
+    background: #D10056;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+    .btn-register:hover {
+        background: #b10049;
+        color: #fff;
+    }
+
+    .btn-register:focus,
+    .btn-register:active {
+        background: #99003f;
+        color: #fff;
+        box-shadow: none;
+    }
+
+.auth-card a {
+    color: #D10056;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    .auth-card a:hover {
+        color: #b10049;
+    }
+
+.back-home {
+    color: #666;
+    text-decoration: none;
+    transition: .3s;
+}
+
+    .back-home:hover {
+        color: #D10056;
+    }
+
+/* ==========================
+   OTP Verification
+========================== */
+
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.otp-input {
+    width: 55px;
+    height: 60px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+    .otp-input:focus {
+        outline: none;
+        border-color: #D10056;
+        box-shadow: 0 0 8px rgba(209, 0, 86, .25);
+    }

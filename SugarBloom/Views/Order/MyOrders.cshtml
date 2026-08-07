@@ -1,0 +1,335 @@
+﻿@model List<CakeBake.ViewModels.Orders.OrderViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Made With Love</p>
+                    <h1>Order History</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+
+
+
+<div class="orders-page">
+
+    <div class="orders-header">
+
+        <h1>My Orders</h1>
+
+        <p>
+            Keep track of all your delicious cake orders.
+        </p>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-orders">
+
+            <i class="fas fa-box-open"></i>
+
+            <h3>No Orders Yet</h3>
+
+            <p>
+                Looks like you haven't placed any orders yet.
+            </p>
+
+            <a asp-controller="Shop"
+               asp-action="Index"
+               class="shop-btn">
+
+                Start Shopping
+
+            </a>
+
+        </div>
+    }
+    else
+    {
+
+        <div class="orders-summary">
+
+            <div class="summary-card">
+
+                <i class="fas fa-shopping-bag"></i>
+
+                <span>Total Orders</span>
+
+                <h2>@Model.Count</h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <i class="fas fa-clock"></i>
+
+                <span>Pending</span>
+
+                <h2>@Model.Count(x=>x.Status==CakeBake.Enums.OrderStatus.Pending)</h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <i class="fas fa-motorcycle"></i>
+
+                <span>Delivery</span>
+
+                <h2>@Model.Count(x=>x.Status==CakeBake.Enums.OrderStatus.OutForDelivery)</h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <i class="fas fa-check-circle"></i>
+
+                <span>Delivered</span>
+
+                <h2>@Model.Count(x=>x.Status==CakeBake.Enums.OrderStatus.Delivered)</h2>
+
+            </div>
+
+        </div>
+
+        @foreach (var order in Model)
+        {
+
+            <div class="order-card">
+
+                <div class="order-top">
+
+                    <div>
+
+                        <h3>
+
+                            Order #@order.Id
+
+                        </h3>
+
+                        <span>
+
+                            @order.OrderDate.ToString("dd MMM yyyy")
+
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        @switch(order.Status)
+                        {
+                            case CakeBake.Enums.OrderStatus.Pending:
+                                <span class="status pending">Pending</span>
+                                break;
+
+                            case CakeBake.Enums.OrderStatus.Preparing:
+                                <span class="status preparing">Preparing</span>
+                                break;
+
+                            case CakeBake.Enums.OrderStatus.OutForDelivery:
+                                <span class="status delivery">Out For Delivery</span>
+                                break;
+
+                            case CakeBake.Enums.OrderStatus.Delivered:
+                                <span class="status delivered">Delivered</span>
+                                break;
+
+                            case CakeBake.Enums.OrderStatus.Cancelled:
+                                <span class="status cancelled">Cancelled</span>
+                                break;
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="order-info">
+
+                    <div class="info-box">
+
+                        <small>Total</small>
+
+                        <h4>
+
+                            @order.TotalPrice.ToString("0.00") EGP
+
+                        </h4>
+
+                    </div>
+
+                    <div class="info-box">
+
+                        <small>Items</small>
+
+                        <h4>
+
+                            @order.Items.Count
+
+                        </h4>
+
+                    </div>
+
+                </div>
+
+                <div class="timeline">
+
+                    <div class="step @(order.Status >= CakeBake.Enums.OrderStatus.Pending ? "active":"")">
+
+                        <div></div>
+
+                        <span>Pending</span>
+
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="step @(order.Status >= CakeBake.Enums.OrderStatus.Preparing ? "active":"")">
+
+                        <div></div>
+
+                        <span>Preparing</span>
+
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="step @(order.Status >= CakeBake.Enums.OrderStatus.OutForDelivery ? "active":"")">
+
+                        <div></div>
+
+                        <span>Delivery</span>
+
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="step @(order.Status == CakeBake.Enums.OrderStatus.Delivered ? "active":"")">
+
+                        <div></div>
+
+                        <span>Done</span>
+
+                    </div>
+
+                </div>
+
+                <button class="details-btn"
+                        type="button"
+                        onclick="toggleOrder(@order.Id)">
+
+                    View Order Details
+
+                </button>
+
+                <div id="order-@order.Id"
+                     class="mt-4"
+                     style="display:none;">
+
+                    <div class="details-box">
+
+                        @foreach (var item in order.Items)
+                        {
+                            <div class="product-item">
+
+                                <img src="@item.ImageUrl" alt="@item.ProductName" />
+
+                                <div class="product-info">
+
+                                    <h5>@item.ProductName</h5>
+
+                                    <span>
+                                        Quantity : @item.Quantity
+                                    </span>
+
+                                </div>
+
+                                <div class="product-price">
+
+                                    @item.Total.ToString("0.00") EGP
+
+                                </div>
+
+                            </div>
+
+                            <hr />
+                        }
+
+                        <div class="order-extra">
+
+                            <p>
+                                <strong>Delivery Address</strong><br />
+                                @order.DeliveryAddress
+                            </p>
+
+                            @if (!string.IsNullOrWhiteSpace(order.Notes))
+                            {
+                                <p>
+                                    <strong>Notes</strong><br />
+                                    @order.Notes
+                                </p>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+
+        <div class="orders-end-card">
+
+            <i class="fas fa-birthday-cake"></i>
+
+            <h3>That's all for now!</h3>
+
+            <p>
+                Looks like you've reached the end of your orders.
+            </p>
+
+            <a asp-controller="Shop"
+               asp-action="Index"
+               class="shop-now-btn">
+
+                <i class="fas fa-shopping-bag me-2"></i>
+
+            </a>
+
+        </div>
+
+    }
+
+</div>
+
+@section Scripts
+{
+
+    <script>
+        function toggleOrder(id){
+
+            const box = document.getElementById("order-" + id);
+
+            if(box.style.display === "none" || box.style.display === ""){
+                box.style.display = "block";
+            }
+            else{
+                box.style.display = "none";
+            }
+
+        }
+    </script>
+
+}

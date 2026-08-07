@@ -1,0 +1,351 @@
+﻿@model CakeBake.ViewModels.Cart.CartViewModel
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Review your selected items</p>
+						<h1>Your Shopping Cart</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+<form id="antiForgeryForm">
+	@Html.AntiForgeryToken()
+</form>
+
+
+	<!-- cart -->
+	<div class="cart-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-12">
+					<div class="custom-cart-table-wrap">
+						<table class="custom-cart-table">
+							<thead class="cart-table-head">
+								<tr class="table-head-row">
+									<th class="product-remove"></th>
+								<th class="cart-product-image">Product Image</th>
+									<th class="product-name">Name</th>
+									<th class="product-price">Price</th>
+									<th class="product-quantity">Quantity</th>
+									<th class="product-total">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								@if (Model.Items.Any())
+								{
+									@foreach (var item in Model.Items)
+									{
+									<tr class="table-body-row" id="row-@item.ProductId">
+
+											<td class="product-remove">
+
+											<form class="remove-form"
+												  data-product-id="@item.ProductId">
+
+												@Html.AntiForgeryToken()
+
+												<button type="submit"
+														class="border-0 bg-transparent">
+
+													<i class="far fa-window-close text-danger"></i>
+
+												</button>
+
+											</form>
+
+											</td>
+
+										<td class="cart-product-image">
+											<img src="@item.ImageUrl"
+												 alt="@item.ProductName"
+												 class="img-fluid">
+										</td>
+
+											<td class="product-name">
+												@item.ProductName
+											</td>
+
+											<td class="product-price">
+												@item.UnitPrice.ToString("0.00") EGP
+											</td>
+
+										
+
+										<td class="product-quantity">
+
+											<input type="number"
+												   class="form-control me-2 quantity-input"
+												   data-product-id="@item.ProductId"
+												   data-stock="@item.StockQuantity"
+												   value="@item.Quantity"
+												   min="0" />
+
+										</td>
+
+											
+
+										<td class="product-total"
+											id="item-total-@item.ProductId">
+
+											@item.TotalPrice.ToString("0.00") EGP
+
+										</td>
+
+										</tr>
+									}
+								}
+								else
+								{
+									<tr>
+									<td colspan="6" class="text-center py-5">
+
+										<div class="empty-cart">
+
+											<i class="fas fa-shopping-cart fa-3x mb-3 text-muted"></i>
+
+											<h4>Your cart is empty</h4>
+
+											<p class="text-muted">
+												Looks like you haven't added any desserts yet.
+											</p>
+
+										</div>
+
+									</td>
+									</tr>
+								}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="total-section">
+						<table class="total-table">
+							<thead class="total-table-head">
+								<tr class="table-total-row">
+									<th>Total</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="total-data">
+									<td><strong>Subtotal: </strong></td>
+								<td id="subtotal">
+									@Model.GrandTotal.ToString("0.00") EGP
+								</td>
+								</tr>
+								<tr class="total-data">
+									<td><strong>Shipping: </strong></td>
+									<td>Calculated at Checkout</td>
+								</tr>
+								<tr class="total-data">
+									<td><strong>Total: </strong></td>
+								<td id="grand-total">
+									@Model.GrandTotal.ToString("0.00") EGP
+								</td>
+								</tr>
+							</tbody>
+						</table>
+						
+							<div class="cart-buttons">
+
+								<a asp-controller="Shop"
+								   asp-action="Index"
+								   class="boxed-btn">
+
+									Continue Shopping
+
+								</a>
+
+								<a asp-controller="Checkout"
+								   asp-action="Index"
+								   class="boxed-btn black">
+
+									Check Out
+
+								</a>
+
+							</div>
+						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end cart -->
+
+<div id="cart-toast" class="cart-toast">
+	<i class="fas fa-exclamation-circle"></i>
+	<span id="cart-toast-text"></span>
+</div>
+
+@section Scripts{
+	<script>
+						const token =
+		document.querySelector("#antiForgeryForm input[name='__RequestVerificationToken']").value;
+
+		document.querySelectorAll(".quantity-input").forEach(input => {
+
+			input.addEventListener("change", async function () {
+
+				const quantity = parseInt(this.value);
+
+				const productId = this.dataset.productId;
+
+								const stock = parseInt(this.dataset.stock);
+
+		if (quantity > stock) {
+
+			this.value = stock;
+
+			const toast = document.getElementById("cart-toast");
+			const text = document.getElementById("cart-toast-text");
+
+			text.innerText = "Only " + stock + " item(s) available in stock.";
+
+			toast.classList.add("show");
+
+			setTimeout(() => {
+				toast.classList.remove("show");
+			}, 2000);
+
+			return;
+		}
+
+				let url =
+					quantity <= 0
+					? "/Cart/RemoveAjax"
+					: "/Cart/UpdateAjax";
+
+				const body =
+					quantity <= 0
+					? `productId=${productId}`
+					: `productId=${productId}&quantity=${quantity}`;
+
+				const response = await fetch(url, {
+
+					method: "POST",
+
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+						"RequestVerificationToken": token
+					},
+
+					body: body
+
+				});
+
+				const result = await response.json();
+
+				if (!result.success)
+					return;
+
+
+				let badge = document.getElementById("cart-count");
+
+				if (result.cartCount > 0) {
+
+					if (badge)
+						badge.innerText = result.cartCount;
+
+				}
+				else {
+
+					badge?.remove();
+
+				}
+
+				if (quantity <= 0) {
+
+					document.getElementById(`row-${productId}`).remove();
+
+				}
+				else {
+
+					document.getElementById(`item-total-${productId}`).innerText =
+						result.itemTotal.toFixed(2) + " EGP";
+
+				}
+
+				document.getElementById("subtotal").innerText =
+					result.grandTotal.toFixed(2) + " EGP";
+
+				document.getElementById("grand-total").innerText =
+					result.grandTotal.toFixed(2) + " EGP";
+
+			});
+
+		});
+
+				document.querySelectorAll(".remove-form").forEach(form => {
+
+			form.addEventListener("submit", async function (e) {
+
+				e.preventDefault();
+
+				const productId = this.dataset.productId;
+
+				const response = await fetch("/Cart/RemoveAjax", {
+
+					method: "POST",
+
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+						"RequestVerificationToken": token
+					},
+
+					body: `productId=${productId}`
+
+				});
+
+				const result = await response.json();
+
+				if (!result.success)
+					return;
+
+				document.getElementById(`row-${productId}`)?.remove();
+
+						if (document.querySelectorAll(".table-body-row").length === 0) {
+
+			location.reload();
+
+		}
+
+				const badge = document.getElementById("cart-count");
+
+				if (result.cartCount > 0) {
+
+					if (badge)
+						badge.innerText = result.cartCount;
+
+				}
+				else {
+
+					badge?.remove();
+
+				}
+
+				document.getElementById("subtotal").innerText =
+					result.grandTotal.toFixed(2) + " EGP";
+
+				document.getElementById("grand-total").innerText =
+					result.grandTotal.toFixed(2) + " EGP";
+
+			});
+
+		});
+
+	</script>
+
+
+}

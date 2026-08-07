@@ -1,0 +1,314 @@
+﻿@model CakeBake.ViewModels.Customer.EditProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Manage Your Account</p>
+                    <h1>My Profile</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="profile-section">
+
+    <div class="container">
+
+        <form asp-action="Index"
+              asp-controller="Profile"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+
+
+            <div class="profile-card">
+
+                <div class="profile-header">
+
+                    <div class="profile-image-wrapper">
+
+                        <img src="@(string.IsNullOrEmpty(Model.CurrentImage)
+                                                                  ? Url.Content("~/assets/img/user.png")
+                                                                  : Model.CurrentImage)"
+                             class="profile-image"
+                             id="previewImage" />
+
+                        <div class="profile-image-overlay">
+
+                            <i class="fas fa-camera"></i>
+
+                            <span>Change Photo</span>
+
+                        </div>
+
+                    </div>
+
+                    <input asp-for="Image"
+                           id="Image"
+                           hidden />
+
+                    <h2>@Model.FullName</h2>
+
+                    <span class="profile-role">
+                        Customer
+                    </span>
+
+                </div>
+
+                <div class="profile-body">
+
+                    <div class="profile-item">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+
+                            <label class="mb-0">Full Name</label>
+
+                            <i class="fas fa-pen text-warning edit-icon"
+                               data-target="FullName"
+                               style="cursor:pointer"></i>
+
+                        </div>
+
+                        <input asp-for="FullName"
+                               id="FullName"
+                               class="form-control profile-input"
+                               readonly />
+
+                    </div>
+
+                    <div class="profile-item mt-3">
+
+                        <label>Email</label>
+
+                        <input asp-for="Email"
+                               class="form-control"
+                               readonly />
+
+                    </div>
+
+                    <div class="profile-item mt-3">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+
+                            <label class="mb-0">Password</label>
+
+                            <i class="fas fa-pen text-warning"
+                               id="passwordEdit"
+                               style="cursor:pointer"></i>
+
+                        </div>
+
+                        <input type="password"
+                               class="form-control"
+                               value="123456789"
+                               readonly />
+
+                    </div>
+
+                    <div id="passwordFields"
+                         style="@(ViewData.ModelState.ErrorCount > 0 ? "display:block;" : "display:none;")">
+
+                        <div class="profile-item mt-3">
+
+                            <label>Current Password</label>
+
+                            <input asp-for="CurrentPassword"
+                                   type="password"
+                                   id="CurrentPassword"
+                                   class="form-control"
+                                   placeholder="Enter current password" />
+
+                            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="profile-item mt-3">
+
+                            <label>New Password</label>
+
+                            <input asp-for="NewPassword"
+                                   type="password"
+                                   id="NewPassword"
+                                   class="form-control"
+                                   placeholder="Enter new password" />
+
+                            <span asp-validation-for="NewPassword" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="profile-item mt-3">
+
+                            <label>Confirm New Password</label>
+
+                            <input asp-for="ConfirmPassword"
+                                   type="password"
+                                   id="ConfirmPassword"
+                                   class="form-control"
+                                   placeholder="Confirm new password" />
+
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+                </div>
+
+                <div class="profile-actions mt-4">
+
+                    <button type="submit"
+                            id="saveBtn"
+                            class="profile-btn"
+                            style="display:none">
+
+                        Save Changes
+
+                    </button>
+
+                    <button type="button"
+                            id="cancelBtn"
+                            class="profile-btn"
+                            style="display:none">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        const form = document.querySelector("form");
+
+
+        const saveBtn = document.getElementById("saveBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        const fullName = document.getElementById("FullName");
+
+        const image = document.getElementById("Image");
+        const preview = document.getElementById("previewImage");
+
+        const passwordEdit = document.getElementById("passwordEdit");
+        const passwordFields = document.getElementById("passwordFields");
+
+        const currentPassword = document.getElementById("CurrentPassword");
+        const newPassword = document.getElementById("NewPassword");
+        const confirmPassword = document.getElementById("ConfirmPassword");
+
+        const originalName = fullName.value;
+        const originalImage = preview.src;
+
+        document.querySelectorAll(".edit-icon").forEach(icon => {
+
+            icon.addEventListener("click", () => {
+
+                const input = document.getElementById(icon.dataset.target);
+
+                input.removeAttribute("readonly");
+                input.focus();
+
+                        saveBtn.style.display = "inline-block";
+        cancelBtn.style.display = "inline-block";
+
+            });
+
+        });
+
+        passwordEdit.addEventListener("click", () => {
+
+            passwordFields.style.display = "block";
+
+            currentPassword.focus();
+
+            saveBtn.style.display = "inline-block";
+            cancelBtn.style.display = "inline-block";
+
+        });
+
+        form.addEventListener("input", () => {
+
+            saveBtn.style.display = "inline-block";
+            cancelBtn.style.display = "inline-block";
+
+        });
+
+        document
+            .querySelector(".profile-image-wrapper")
+            .addEventListener("click", () => {
+
+                image.click();
+
+            });
+
+        image.addEventListener("change", () => {
+
+            console.log("Image Changed");
+
+            if (image.files.length > 0) {
+
+                preview.src = URL.createObjectURL(image.files[0]);
+
+                saveBtn.style.display = "inline-block";
+                cancelBtn.style.display = "inline-block";
+
+            }
+
+        });
+
+        cancelBtn.addEventListener("click", () => {
+
+            fullName.value = originalName;
+
+            fullName.setAttribute("readonly", "readonly");
+
+            preview.src = originalImage;
+
+            image.value = "";
+
+            passwordFields.style.display = "none";
+
+            currentPassword.value = "";
+            newPassword.value = "";
+            confirmPassword.value = "";
+
+            saveBtn.style.display = "none";
+            cancelBtn.style.display = "none";
+
+        });
+
+
+
+
+
+
+
+    </script>
+}
