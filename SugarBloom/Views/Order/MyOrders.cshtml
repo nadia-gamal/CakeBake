@@ -272,6 +272,11 @@
                                 @order.DeliveryAddress
                             </p>
 
+                            <p>
+                                <strong>PhoneNumber</strong><br />
+                                @order.PhoneNumber
+                            </p>
+
                             @if (!string.IsNullOrWhiteSpace(order.Notes))
                             {
                                 <p>
@@ -300,13 +305,7 @@
                 Looks like you've reached the end of your orders.
             </p>
 
-            <a asp-controller="Shop"
-               asp-action="Index"
-               class="shop-now-btn">
-
-                <i class="fas fa-shopping-bag me-2"></i>
-
-            </a>
+            
 
         </div>
 

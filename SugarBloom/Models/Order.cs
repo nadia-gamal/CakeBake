@@ -19,6 +19,9 @@ namespace CakeBake.Models
         [StringLength(250)]
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        [Required]
+        public int PhoneNumber { get; set; } 
+
         [StringLength(500)]
         public string? Notes { get; set; }
 

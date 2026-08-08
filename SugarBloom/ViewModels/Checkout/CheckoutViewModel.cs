@@ -13,6 +13,9 @@ namespace CakeBake.ViewModels.Checkout
         [Display(Name = "Delivery Address")]
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        [Required]
+        public int PhoneNumber { get; set; }
+
         [Display(Name = "Notes")]
         public string? Notes { get; set; }
     }

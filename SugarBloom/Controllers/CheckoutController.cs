@@ -46,6 +46,9 @@ namespace CakeBake.Controllers
 
                 checkout.DeliveryAddress = model.DeliveryAddress;
                 checkout.Notes = model.Notes;
+                checkout.PhoneNumber = model.PhoneNumber;
+                
+
 
                 return View("Index", checkout);
             }

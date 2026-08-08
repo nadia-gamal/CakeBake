@@ -14,6 +14,8 @@ namespace CakeBake.ViewModels.Orders
 
         public string DeliveryAddress { get; set; } = string.Empty;
 
+        public int PhoneNumber { get; set; }
+
         public string? Notes { get; set; }
 
         public List<OrderItemViewModel> Items { get; set; } = new();

@@ -178,6 +178,7 @@ namespace CakeBake.Services
             {
                 ApplicationUserId = userId,
                 DeliveryAddress = model.DeliveryAddress,
+                PhoneNumber = model.PhoneNumber,
                 Notes = model.Notes,
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Pending,

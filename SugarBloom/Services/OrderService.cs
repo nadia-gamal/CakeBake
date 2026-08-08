@@ -40,6 +40,8 @@ namespace CakeBake.Services
 
                 DeliveryAddress = o.DeliveryAddress,
 
+                PhoneNumber = o.PhoneNumber,
+
                 Notes = o.Notes,
 
                 Items = o.OrderItems.Select(i => new OrderItemViewModel
