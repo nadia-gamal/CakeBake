@@ -1,8 +1,8 @@
-﻿# 🍰 SugarBloom
+﻿# 🍰 CakeBake
 
 > A full-stack online bakery store built with ASP.NET Core MVC.
 
-SugarBloom is a web-based bakery e-commerce application that allows customers to browse bakery products, manage their shopping cart, place orders, and manage their profiles.
+CakeBake is a web-based bakery e-commerce application that allows customers to browse bakery products, manage their shopping cart, place orders, and manage their profiles.
 
 The project also includes an admin dashboard for managing products, categories, orders, customers, and store-related content.
 
@@ -77,7 +77,7 @@ The project also includes an admin dashboard for managing products, categories, 
 The project follows a structured MVC architecture with a service layer.
 
 ```text
-SugarBloom
+CakeBake
 │
 ├── Configurations
 ├── Constants
@@ -115,6 +115,7 @@ SugarBloom
 #### ViewModels
 
 - Transfer the required data between controllers and views
+- Provide the data required by each specific view
 
 #### Views
 
@@ -124,135 +125,95 @@ SugarBloom
 
 ## 📸 Screenshots
 
-### 🏠 Home Page
+### Home Page
 
 ![Home Page](Screenshots/home.png)
 
-### 🛍️ Shop
+### Shop
 
 ![Shop](Screenshots/shop.png)
 
-### 🍰 Product Details
+### Product Details
 
 ![Product Details](Screenshots/product-details.png)
 
-### 🛒 Shopping Cart
+### Shopping Cart
 
 ![Shopping Cart](Screenshots/cart.png)
 
-### 💳 Checkout
+### Checkout
 
 ![Checkout](Screenshots/checkout.png)
 
-### ⚙️ Admin Dashboard
+### Admin Dashboard
 
-![Admin Dashboard](Screenshots/admin-dashboard.png)
+![Admin Dashboard](Screenshots/admin-dashboard.PNG)
 
-### 📦 Product Management
+### Product Management
 
-![Product Management](Screenshots/products.png)
+![Product Management](Screenshots/products.PNG)
 
-### 📋 Orders
+### Categories
 
-![Orders](Screenshots/orders.png)
+![Categories](Screenshots/categories.PNG)
+
+### Orders
+
+![Orders](Screenshots/orders.PNG)
+
+### My Orders
+
+![My Orders](Screenshots/Myorders.png)
+
+### Customer Profile
+
+![Customer Profile](Screenshots/Customer-Profile.png)
+
+### Admin Profile
+
+![Admin Profile](Screenshots/Admin-Profile.PNG)
+
+### Customers
+
+![Customers](Screenshots/Customers.PNG)
+
+### Login
+
+![Login](Screenshots/login.png)
+
+### Register
+
+![Register](Screenshots/register.png)
+
+### About
+
+![About](Screenshots/about.png)
+
+### Contact
+
+![Contact](Screenshots/contact.png)
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Clone the repository
+### Prerequisites
 
-```bash
-git clone https://github.com/nadia-gamal/CakeBake.git
-```
+- .NET SDK
+- SQL Server
+- Visual Studio 2022
 
-### 2. Open the project
+### Setup
 
-Open the solution:
+1. Clone the repository.
 
-```text
-SugarBloom.sln
-```
+2. Open the solution in Visual Studio.
 
-using Visual Studio.
+3. Configure the database connection string in `appsettings.json`.
 
-### 3. Configure the database
+4. Apply the Entity Framework Core migrations.
 
-Update the connection string in:
-
-```text
-appsettings.json
-```
-
-according to your SQL Server configuration.
-
-### 4. Apply migrations
-
-Open Package Manager Console and run:
-
-```powershell
-Update-Database
-```
-
-### 5. Run the application
-
-Run the project from Visual Studio or use:
-
-```bash
-dotnet run
-```
-
----
-
-## 🔑 Authentication
-
-The application uses ASP.NET Core Identity for authentication and authorization.
-
-Different user roles are supported, including:
-
-- Customer
-- Admin
-
-Authentication-related functionality includes:
-
-- Registration
-- Login
-- Email verification
-- OTP password reset
-- Role-based authorization
-
----
-
-## 🗄️ Main Entities
-
-The application includes several entities such as:
-
-- ApplicationUser
-- Product
-- Category
-- Cart
-- CartItem
-- Order
-- OrderItem
-- ContactMessage
-- OtpCode
-
----
-
-## 🎯 Project Goals
-
-The main goal of SugarBloom is to build a complete bakery e-commerce experience while applying practical software development concepts such as:
-
-- MVC architecture
-- Service layer architecture
-- Entity Framework Core
-- Authentication & Authorization
-- Database relationships
-- CRUD operations
-- ViewModels
-- Dependency Injection
-- Image management
-- Order and cart management
+5. Build and run the application.
 
 ---
 
@@ -260,5 +221,4 @@ The main goal of SugarBloom is to build a complete bakery e-commerce experience 
 
 **Nadia Gamal**
 
-GitHub:  
-https://github.com/nadia-gamal
+GitHub: [nadia-gamal](https://github.com/nadia-gamal)
